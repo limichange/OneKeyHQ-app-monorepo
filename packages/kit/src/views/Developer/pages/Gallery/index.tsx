@@ -487,6 +487,13 @@ const HyperlinkTextGallery = LazyLoadPage(
     ),
 );
 
+const SecretHashGallery = LazyLoadPage(
+  () =>
+    import(
+      '@onekeyhq/kit/src/views/Developer/pages/Gallery/Components/stories/SecretHashGallery'
+    ),
+);
+
 export const galleryScreenList: {
   name: EGalleryRoutes;
   component: ComponentType;
@@ -706,5 +713,9 @@ export const galleryScreenList: {
   {
     name: EGalleryRoutes.HyperlinkTextGallery,
     component: HyperlinkTextGallery,
+  },
+  {
+    name: EGalleryRoutes.ComponentSecretHash,
+    component: SecretHashGallery,
   },
 ];

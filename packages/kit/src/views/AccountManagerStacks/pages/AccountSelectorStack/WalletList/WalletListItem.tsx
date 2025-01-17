@@ -10,6 +10,7 @@ import type { IAccountSelectorFocusedWallet } from '@onekeyhq/kit-bg/src/dbs/sim
 import platformEnv from '@onekeyhq/shared/src/platformEnv';
 
 type IWalletListItemProps = {
+  isDragging?: boolean;
   isOthers?: boolean;
   focusedWallet: IAccountSelectorFocusedWallet;
   wallet: IDBWallet | undefined;
@@ -19,6 +20,7 @@ type IWalletListItemProps = {
   Partial<IWalletAvatarProps>;
 
 export function WalletListItem({
+  isDragging,
   wallet,
   focusedWallet,
   onWalletPress,
@@ -131,7 +133,7 @@ export function WalletListItem({
     basicComponent
   );
 
-  if (hiddenWallets && hiddenWallets.length > 0) {
+  if (!isDragging && hiddenWallets && hiddenWallets.length > 0) {
     return (
       <Stack
         borderRadius="$3"

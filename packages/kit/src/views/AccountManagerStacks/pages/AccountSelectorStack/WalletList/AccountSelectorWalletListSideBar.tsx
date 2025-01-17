@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { StyleSheet } from 'react-native';
 
@@ -81,6 +81,7 @@ export function AccountSelectorWalletListSideBar({ num }: IWalletListProps) {
   // const linkNetwork = route.params?.linkNetwork;
   const isEditableRouteParams = route.params?.editable;
   const { selectedAccount } = useSelectedAccount({ num });
+  const [draggingItem, setDraggingItem] = useState<IDBWallet | null>(null);
 
   const {
     result: walletsResult,
@@ -150,6 +151,8 @@ export function AccountSelectorWalletListSideBar({ num }: IWalletListProps) {
     let offset = 0;
     const layouts: { offset: number; length: number; index: number }[] = [];
     wallets?.forEach?.((wallet) => {
+      // const thisItemIsDragging = draggingItem?.id === wallet?.id;
+
       const hiddenWalletsLength = wallet?.hiddenWallets?.length ?? 0;
       const height = (1 + hiddenWalletsLength) * (CELL_HEIGHT + 12);
       layouts.push({ offset, length: height, index: layouts.length });
@@ -209,7 +212,10 @@ export function AccountSelectorWalletListSideBar({ num }: IWalletListProps) {
         )}
         keyExtractor={(item) => `${item.id}`}
         data={wallets as IDBWallet[]}
+        onDragBegin={(index) => setDraggingItem(wallets[index])}
         onDragEnd={async (result) => {
+          setDraggingItem(null);
+
           if (!walletsResult) {
             return;
           }
@@ -234,6 +240,7 @@ export function AccountSelectorWalletListSideBar({ num }: IWalletListProps) {
           return (
             <Stack pb="$3" dataSet={dragProps}>
               <WalletListItem
+                isDragging={draggingItem?.id === item?.id}
                 key={item.id}
                 wallet={item}
                 focusedWallet={selectedAccount.focusedWallet}
